@@ -51,9 +51,15 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# hidden files.
+.DS_Store
+
 # Raytracing resources.
 books
 style
 images
 *.html
 *.png
+
+# Build directory
+build
