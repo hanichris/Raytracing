@@ -1,7 +1,7 @@
 #ifndef MY_VEC3_H
 #define MY_VEC3_H 1
 
-#include <tgmath.h>
+#include <math.h>
 
 typedef struct vec3 vec3;
 struct vec3 {
