@@ -11,15 +11,16 @@ struct ray {
 
 static
 point3* at(ray const* r, double t, point3* out) {
-	if (r) {
+	if (r && out) {
 		vec3 tmp = {
 			.x = r->dir.x,
 			.y = r->dir.y,
 			.z = r->dir.z
 		};
 		add(&r->orig, scalar_mul(&tmp, t), out);
+		return out;
 	}
-	return out;
+	return nullptr;
 }
 
 
