@@ -1,12 +1,16 @@
 TARGET_EXEC := main.out
 
 BUILD_DIR := ./build
-SRC_DIR := ./src
 LIB_DIR := ./lib
+SRC_DIR := ./src
+TEST_DIR := ./test
 
 LIB_NAME := libvec3.a
 LIB_SRC := $(SRC_DIR)/vec3.c
 LIB_OBJ := $(BUILD_DIR)/vec3.o
+
+TEST_SRC := $(TEST_DIR)/test_vec3.c
+TEST_EXEC := $(TEST_DIR)/test_vec3.out
 
 SRCS := $(shell find $(SRC_DIR) -name '*.c' ! -name 'vec3.c')
 OBJS := $(SRCS:%.c=$(BUILD_DIR)/%.o)
@@ -44,10 +48,19 @@ $(LIB_OBJ): $(LIB_SRC)
 	$(V)mkdir -p $(dir $@)
 	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) $(LTO_FLAGS) -c $< -o  $@
 
+.PHONY: test
+test: $(TEST_EXEC)
+	@echo "Running tesst suit: $<"
+	$(V)./$<
+
+$(TEST_EXEC): $(TEST_SRC) $(LIB_DIR)/$(LIB_NAME)
+	@echo "Compiling test suit: $<"
+	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) $(LTO_FLAGS) $< -o $@ -lm -L$(LIB_DIR) -lvec3
+
 .PHONY: clean
 clean:
 	@echo "Cleaning build files..."
-	$(V)rm -r $(BUILD_DIR) $(LIB_DIR)
+	$(V)rm -r $(BUILD_DIR) $(LIB_DIR) $(TEST_EXEC)
 
 .PHONY: verbose
 verbose:
