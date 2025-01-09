@@ -61,7 +61,7 @@ vec3* scalar_mul(vec3* u, double t) {
  */
 inline
 vec3* scalar_div(vec3* u, double t) {
-	if (u && t) {
+	if (u) {
 		u->x /= t;
 		u->y /= t;
 		u->z /= t;
