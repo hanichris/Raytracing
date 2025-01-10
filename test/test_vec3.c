@@ -14,13 +14,14 @@ bool float_equal(double a, double b) {
 void test_cross(void) {
 	vec3 u = {1.0, 2.0, 3.0};
 	vec3 v = {4.0, 5.0, 6.0};
-	vec3 out = { };
+	//vec3 out = { };
 	
-	cross(&u, &v, &out);
+	//cross(&u, &v, &out);
+	vec3* out = VEC3_CROSS(&u, &v);
 
-	assert(float_equal(out.x, -3.0));
-	assert(float_equal(out.y, 6.0));
-	assert(float_equal(out.z, -3.0));
+	assert(float_equal(out->x, -3.0));
+	assert(float_equal(out->y, 6.0));
+	assert(float_equal(out->z, -3.0));
 	//printf("'test_cross' passed.\n");
 	putchar('.');
 	
@@ -36,7 +37,6 @@ void test_cross_null(void) {
 	assert(cross(&u, &v, NULL) == NULL);
 
 	putchar('.');
-	
 	//printf("'test_cross_null' passed.\n");
 }
 
@@ -67,13 +67,14 @@ void test_dot_null(void) {
 void test_add() {
 	vec3 u = {1.0, 2.0, 3.0};
 	vec3 v = {4.0, 5.0, 6.0};
-	vec3 out;
+	//vec3 out;
 
-	add(&u, &v, &out);
+	//add(&u, &v, &out);
+	vec3* out = VEC3_ADD(&u, &v);
 
-	assert(float_equal(out.x, 5.0));
-	assert(float_equal(out.y, 7.0));
-	assert(float_equal(out.z, 9.0));
+	assert(float_equal(out->x, 5.0));
+	assert(float_equal(out->y, 7.0));
+	assert(float_equal(out->z, 9.0));
 
 	putchar('.');
 	
@@ -83,13 +84,14 @@ void test_add() {
 void test_sub() {
 	vec3 u = {1.0, 2.0, 3.0};
 	vec3 v = {4.0, 5.0, 6.0};
-	vec3 out;
+	//vec3 out;
 
-	sub(&u, &v, &out);
+	//sub(&u, &v, &out);
+	vec3* out = VEC3_SUB(&u, &v);
 
-	assert(float_equal(out.x, -3.0));
-	assert(float_equal(out.y, -3.0));
-	assert(float_equal(out.z, -3.0));
+	assert(float_equal(out->x, -3.0));
+	assert(float_equal(out->y, -3.0));
+	assert(float_equal(out->z, -3.0));
 
 	putchar('.');
 	
@@ -98,12 +100,14 @@ void test_sub() {
 
 void test_scalar_mul() {
 	vec3 u = {1.0, 2.0, 3.0};
+	//vec3 v = { };
 
-	scalar_mul(&u, 2.0);
+	//scalar_mul(&u, 2.0, &v);
+	vec3* v = VEC3_MUL(&u, 2.0);
 
-	assert(float_equal(u.x, 2.0));
-	assert(float_equal(u.y, 4.0));
-	assert(float_equal(u.z, 6.0));
+	assert(float_equal(v->x, 2.0));
+	assert(float_equal(v->y, 4.0));
+	assert(float_equal(v->z, 6.0));
 
 	putchar('.');
 	
@@ -112,12 +116,14 @@ void test_scalar_mul() {
 
 void test_scalar_div() {
 	vec3 u = {2.0, 4.0, 6.0};
+	//vec3 v = { };
 
-	scalar_div(&u, 2.0);
+	//scalar_div(&u, 2.0, &v);
+	vec3* v = VEC3_DIV(&u, 2.0);
 
-	assert(float_equal(u.x, 1.0));
-	assert(float_equal(u.y, 2.0));
-	assert(float_equal(u.z, 3.0));
+	assert(float_equal(v->x, 1.0));
+	assert(float_equal(v->y, 2.0));
+	assert(float_equal(v->z, 3.0));
 
 	putchar('.');
 	
@@ -126,11 +132,13 @@ void test_scalar_div() {
 
 void test_scalar_div_zero() {
 	vec3 u = {1.0, 2.0, 3.0};
-	scalar_div(&u, 0.0);
+	//vec3 v = { };
+	//scalar_div(&u, 0.0, &v);
+	vec3* v = VEC3_DIV(&u, 0.0);
 
-	assert(isinf(u.x));
-	assert(isinf(u.y));
-	assert(isinf(u.z));
+	assert(isinf(v->x));
+	assert(isinf(v->y));
+	assert(isinf(v->z));
 
 	putchar('.');
 	
@@ -163,12 +171,14 @@ void test_len() {
 
 void test_unit_vec3() {
 	vec3 u = {3.0, 0.0, 4.0};
+	//vec3 v = { };
 
-	unit_vec3(&u);
+	//unit_vec3(&u, &v);
+	vec3* v = VEC3_UNIT(&u);
 
-	assert(float_equal(u.x, 0.6));
-	assert(float_equal(u.y, 0.0));
-	assert(float_equal(u.z, 0.8));
+	assert(float_equal(v->x, 0.6));
+	assert(float_equal(v->y, 0.0));
+	assert(float_equal(v->z, 0.8));
 
 	//printf("'test_unit_vec3' passed\n");
 	putchar('.');
