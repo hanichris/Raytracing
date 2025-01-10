@@ -35,38 +35,44 @@ double dot(vec3 const* u, vec3 const* v){
 	return (u && v) ? (u->x * v->x) + (u->y * v->y) + (u->z * v->z): NAN;
 }
 
+#define VEC3_MUL(a, b) (scalar_mul((a), (b), (&(vec3){ })))
 /**
  * scalar_mul - computes the multiplication of a vector `u` with a scalar `t`.
- * The vector `u` is modified inplace.
+ * The result is stored in the output vector `out`.
  * @u: pointer to the vector (input).
  * @t: scalar multiplier of the vector (input).
- * @Returns: modified vector `u`
+ * @out: pointer to the (output) vector.
+ * @Returns: `out` or null.
  */
 inline
-vec3* scalar_mul(vec3* u, double t) {
-	if (u) {
-		u->x *= t;
-		u->y *= t;
-		u->z *= t;
+vec3* scalar_mul(vec3 const* u, double t, vec3* out) {
+	if (u && out) {
+		out->x = u->x * t;
+		out->y = u->y * t;
+		out->z = u->z * t;
+		return out;
 	}
-	return u;
+	return nullptr;
 }
 
+#define VEC3_DIV(a, b) (scalar_div((a), (b), (&(vec3){ })))
 /**
  * scalar_div - computes the division of a vector `u` with a scalar `t`.
- * The vector `u` is modified inplace.
+ * The result is stored in the output vector.
  * @u: pointer to the vector (input).
  * @t: scalar divider of the vector (input).
- * @Returns: modified vector `u`
+ * @out: pointer to the (output) vector.
+ * @Returns: `out` or null.
  */
 inline
-vec3* scalar_div(vec3* u, double t) {
-	if (u) {
-		u->x /= t;
-		u->y /= t;
-		u->z /= t;
+vec3* scalar_div(vec3 const* u, double t, vec3* out) {
+	if (u && out) {
+		out->x = u->x / t;
+		out->y = u->y / t;
+		out->z = u->z / t;
+		return out;
 	}
-	return u;
+	return nullptr;
 }
 
 /**
@@ -93,14 +99,17 @@ double len(vec3 const* u) {
 	return u ? sqrt(len_squared(u)): NAN;
 }
 
+#define VEC3_UNIT(a) (unit_vec3((a), (&(vec3){ })))
 /**
  * unit_vec3 - normalises the vector `u`. This operation involves dividing
  * the vector with its length.
- * @u: pointer to the vector.
+ * @u: pointer to the vector (input).
+ * @out: pointer to the output vector.
  * @Returns: a normalised vector.
  */
-vec3* unit_vec3(vec3* u); 
+vec3* unit_vec3(vec3 const* u, vec3* out); 
 
+#define VEC3_SUB(a, b) (sub((a), (b), (&(vec3){ })))
 /**
  * sub - computes the difference between two vectors `u` and `v`. The result
  * is stored in the output vector `out`.
@@ -111,6 +120,7 @@ vec3* unit_vec3(vec3* u);
  */
 vec3* sub(vec3 const* u, vec3 const* v, vec3* out);
 
+#define VEC3_ADD(a, b) (add((a), (b), (&(vec3){ })))
 /**
  * add - computes the sum of two vectors `u` and `v`. The result
  * is stored in the output vector `out`.
@@ -121,6 +131,7 @@ vec3* sub(vec3 const* u, vec3 const* v, vec3* out);
  */
 vec3* add(vec3 const* u, vec3 const* v, vec3* out);
 
+#define VEC3_CROSS(a, b) (cross((a), (b), (&(vec3){ })))
 /**
  * cross - computes the cross product of two vectors `u` and `v`. The result
  * is stored in the output vector `out`.
@@ -132,8 +143,7 @@ vec3* add(vec3 const* u, vec3 const* v, vec3* out);
  * @out: pointer to a stack allocated vector (output).
  * @Returns: `out`.
  */
-vec3* cross(vec3* u, vec3* v, vec3* out);
-
+vec3* cross(vec3 const* u, vec3 const* v, vec3* out);
 
 
 #ifdef __cplusplus
