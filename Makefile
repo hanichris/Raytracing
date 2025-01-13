@@ -51,11 +51,11 @@ $(LIB_OBJ): $(LIB_SRC)
 	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) $(LTO_FLAGS) -c $< -o  $@
 
 .PHONY: test
-test: $(TEST_EXEC)
+test: $(BUILD_DIR)/$(TEST_EXEC)
 	@echo "Running test suit: $<"
 	$(V)./$<
 
-$(TEST_EXEC): $(TEST_OBJS) $(LIB_DIR)/$(LIB_NAME)
+$(BUILD_DIR)/$(TEST_EXEC): $(TEST_OBJS) $(LIB_DIR)/$(LIB_NAME)
 	@echo "Linking executable: $@"
 	$(V)$(CC) $(LTO_FLAGS) $^ -o $@ -lm
 
