@@ -1,16 +1,14 @@
-#include <assert.h>
-#include <math.h>
-#include <stdbool.h>
-#include <stdio.h>
-
 #include "../src/headers/vec3.h"
+#include "test_main.h"
 
 #define EPSILON 1E-9
 
+static
 bool float_equal(double a, double b) {
 	return fabs(a - b) < EPSILON;
 }
 
+static
 void test_tuple_is_a_point(tuple* t) {
 	if (t) {
 		assert(float_equal(t->w, 1.0));
@@ -18,6 +16,7 @@ void test_tuple_is_a_point(tuple* t) {
 	}
 }
 
+static
 void test_tuple_is_a_vector(tuple* t) {
 	if (t) {
 		assert(float_equal(t->w, 0.0));
@@ -25,6 +24,7 @@ void test_tuple_is_a_vector(tuple* t) {
 	}
 }
 
+static
 void test_cross(void) {
 	vec3* u = VECTOR(1, 2, 3);
 	vec3* v = VECTOR(2, 3, 4);
@@ -44,6 +44,7 @@ void test_cross(void) {
 	putchar('.');
 }
 
+static
 void test_cross_null(void) {
 	vec3* u = VECTOR(1, 2, 3);
 	vec3* v = VECTOR(4, 5, 6);
@@ -56,6 +57,7 @@ void test_cross_null(void) {
 	putchar('.');
 }
 
+static
 void test_dot(void) {
 	vec3* u = VECTOR(1, 2, 3);
 	vec3* v = VECTOR(4, 5, 6);
@@ -66,6 +68,7 @@ void test_dot(void) {
 	putchar('.');
 }
 
+static
 void test_dot_null(void) {
 	vec3* u = VECTOR(1, 2, 3);
 
@@ -75,6 +78,7 @@ void test_dot_null(void) {
 	putchar('.');
 }
 
+static
 void test_add_tuples(void) {
 	tuple u = {3, -2, 5, 1};
 	tuple v = {-2, 3, 1, 0};
@@ -89,6 +93,7 @@ void test_add_tuples(void) {
 	putchar('.');
 }
 
+static
 void test_sub_a_vector_from_a_point(void) {
 	point3* p = POINT(3, 2, 1);
 	vec3* v = VECTOR(5, 6, 7);
@@ -103,6 +108,7 @@ void test_sub_a_vector_from_a_point(void) {
 	putchar('.');
 }
 
+static
 void test_sub_a_vector_from_zero_vector(void) {
 	vec3* p = VECTOR(0, 0, 0);
 	vec3* q = VECTOR(5, 6, 7);
@@ -117,6 +123,7 @@ void test_sub_a_vector_from_zero_vector(void) {
 	putchar('.');
 }
 
+static
 void test_sub_two_vectors(void) {
 	vec3* p = VECTOR(3, 2, 1);
 	vec3* q = VECTOR(5, 6, 7);
@@ -131,6 +138,7 @@ void test_sub_two_vectors(void) {
 	putchar('.');
 }
 
+static
 void test_sub_two_points(void) {
 	point3* p = POINT(3, 2, 1);
 	point3* q = POINT(5, 6, 7);
@@ -145,6 +153,7 @@ void test_sub_two_points(void) {
 	putchar('.');
 }
 
+static
 void test_negate_a_tuple(void) {
 	tuple t = { 1, -2, 3, -4};
 
@@ -158,6 +167,7 @@ void test_negate_a_tuple(void) {
 	putchar('.');
 }
 
+static
 void test_scalar_mul_tuple_with_fraction(void) {
 	tuple u = {1.0, -2.0, 3.0, -4.0};
 
@@ -171,6 +181,7 @@ void test_scalar_mul_tuple_with_fraction(void) {
 	putchar('.');
 }
 
+static
 void test_scalar_mul_tuple(void) {
 	tuple u = {1.0, -2.0, 3.0, -4.0};
 
@@ -184,6 +195,7 @@ void test_scalar_mul_tuple(void) {
 	putchar('.');
 }
 
+static
 void test_scalar_div(void) {
 	tuple t = {1, -2, 3, -4};
 
@@ -197,6 +209,7 @@ void test_scalar_div(void) {
 	putchar('.');
 }
 
+static
 void test_scalar_div_zero(void) {
 	tuple t = {1.0, 2.0, 3.0, 4.0};
 
@@ -210,6 +223,7 @@ void test_scalar_div_zero(void) {
 	putchar('.');
 }
 
+static
 void test_len_squared(void) {
 	vec3* u = VECTOR(1, 0, 0);
 	double result = len_squared(u);
@@ -235,6 +249,7 @@ void test_len_squared(void) {
 	
 }
 
+static
 void test_len(void) {
 	vec3* u = VECTOR(1, 0, 0);
 	double result = len(u);
@@ -259,16 +274,19 @@ void test_len(void) {
 	putchar('.');
 }
 
+static
 void test_len_squared_null_pointer(void) {
 	double result = len_squared(nullptr);
 	assert(isnan(result));
 }
 
+static
 void test_len_null_pointer(void) {
 	double result = len(nullptr);
 	assert(isnan(result));
 }
 
+static
 void test_unit_vec3(void) {
 	vec3* u = VECTOR(4, 0, 0);
 	vec3* v = VEC3_UNIT(u);
@@ -285,6 +303,7 @@ void test_unit_vec3(void) {
 	putchar('.');
 }
 
+static
 void test_magnitude_of_unit_vector(void) {
 	vec3* u = VECTOR(1, 2, 3);
 
@@ -297,7 +316,7 @@ void test_magnitude_of_unit_vector(void) {
 }
 
 
-void run_tests(void) {
+void run_vec3_tests(void) {
 	point3* p = POINT(4, -4, 3);
 	vec3* v = VECTOR(4, -4, 3);
 	test_tuple_is_a_point(p);
@@ -322,11 +341,5 @@ void run_tests(void) {
 	test_cross_null();
 	test_dot();
 	test_dot_null();
-	printf("\nAll tests run successfully.\n");
 }
 
-int main(void) {
-	run_tests();
-
-	return 0;
-}
