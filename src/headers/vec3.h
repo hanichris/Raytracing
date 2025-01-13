@@ -18,8 +18,6 @@ struct tuple {
 typedef tuple point3;
 typedef tuple vec3;
 
-void print_vec3(vec3* u);
-
 // Small and frequently used functions are statically inlined.
 
 #define POINT(x, y, z) (point((x), (y), (z), (&(tuple){ })))
