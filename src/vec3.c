@@ -37,4 +37,3 @@ vec3* cross(vec3 const* u, vec3 const* v, vec3* out) {
 	return nullptr;
 }
 
-
