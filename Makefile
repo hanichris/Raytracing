@@ -3,14 +3,16 @@ TARGET_EXEC := main.out
 BUILD_DIR := ./build
 LIB_DIR := ./lib
 SRC_DIR := ./src
-TEST_DIR := ./test
+
+TEST_EXEC := test.out
+TEST_SRC_DIR := ./test
 
 LIB_NAME := libvec3.a
 LIB_SRC := $(SRC_DIR)/vec3.c
 LIB_OBJ := $(BUILD_DIR)/vec3.o
 
-TEST_SRC := $(TEST_DIR)/test_vec3.c
-TEST_EXEC := $(TEST_DIR)/test_vec3.out
+TEST_SRCS := $(shell find $(TEST_SRC_DIR) -name '*.c')
+TEST_OBJS := $(TEST_SRCS:%.c=$(BUILD_DIR)/%.o)
 
 SRCS := $(shell find $(SRC_DIR) -name '*.c' ! -name 'vec3.c')
 OBJS := $(SRCS:%.c=$(BUILD_DIR)/%.o)
@@ -50,12 +52,17 @@ $(LIB_OBJ): $(LIB_SRC)
 
 .PHONY: test
 test: $(TEST_EXEC)
-	@echo "Running tesst suit: $<"
+	@echo "Running test suit: $<"
 	$(V)./$<
 
-$(TEST_EXEC): $(TEST_SRC) $(LIB_DIR)/$(LIB_NAME)
+$(TEST_EXEC): $(TEST_OBJS) $(LIB_DIR)/$(LIB_NAME)
+	@echo "Linking executable: $@"
+	$(V)$(CC) $(LTO_FLAGS) $^ -o $@ -lm
+
+$(BUILD_DIR)/%.o: %.c
 	@echo "Compiling test suit: $<"
-	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) $(LTO_FLAGS) $< -o $@ -lm -L$(LIB_DIR) -lvec3
+	$(V)mkdir -p $(dir $@)
+	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
