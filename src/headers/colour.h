@@ -64,6 +64,19 @@ col3* col_scalar_mul(col3 const* a, float b, col3* c) {
 	return nullptr;
 }
 
+#define COL3_HADAMARD(u, v) (col_hadamard_mul((u), (v), (&(col3){ })))
+static
+inline
+col3* col_hadamard_mul(col3 const* a, col3 const* b, col3* c) {
+	if (a && b && c) {
+		c->red = a->red * b->red;
+		c->green = a->green * b->green;
+		c->blue = a->blue * b->blue;
+		return c;
+	}
+	return nullptr;
+}
+
 #ifdef __cplusplus
 }
 #endif
