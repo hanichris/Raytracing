@@ -8,5 +8,6 @@
 
 void run_col3_tests(void);
 void run_vec3_tests(void);
+void run_canvas_tests(void);
 
 #endif
