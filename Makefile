@@ -9,7 +9,7 @@ TEST_SRC_DIR := ./test
 
 LIB_NAME := libvec3.a
 LIB_SRC := $(SRC_DIR)/vec3.c
-LIB_OBJ := $(BUILD_DIR)/vec3.o
+LIB_OBJ := $(BUILD_DIR)/src/vec3.o
 
 TEST_SRCS := $(shell find $(TEST_SRC_DIR) -name '*.c')
 TEST_OBJS := $(TEST_SRCS:%.c=$(BUILD_DIR)/%.o)
@@ -55,12 +55,17 @@ test: $(BUILD_DIR)/$(TEST_EXEC)
 	@echo "Running test suit: $<"
 	$(V)./$<
 
-$(BUILD_DIR)/$(TEST_EXEC): $(TEST_OBJS) $(LIB_DIR)/$(LIB_NAME)
+$(BUILD_DIR)/$(TEST_EXEC): $(TEST_OBJS) $(LIB_DIR)/$(LIB_NAME) $(BUILD_DIR)/src/canvas.o
 	@echo "Linking executable: $@"
 	$(V)$(CC) $(LTO_FLAGS) $^ -o $@ -lm
 
 $(BUILD_DIR)/%.o: %.c
 	@echo "Compiling test suit: $<"
+	$(V)mkdir -p $(dir $@)
+	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/src/canvas.o: src/canvas.c
+	@echo "Compiling 'canvas.c' file."
 	$(V)mkdir -p $(dir $@)
 	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) -c $< -o $@
 
