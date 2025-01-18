@@ -74,7 +74,7 @@ canvas* canvas_new(uint16_t w, uint16_t h) {
 	size_t size = offsetof(canvas, pixels) + sizeof(col3[w*h]);
 	if (size < sizeof(canvas))
 		size = sizeof(canvas);
-	return canvas_init((canvas*)malloc(size), w, h);
+	return canvas_init((canvas*)calloc(1, size), w, h);
 }
 
 #endif
