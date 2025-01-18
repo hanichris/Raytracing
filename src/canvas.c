@@ -7,15 +7,14 @@ canvas* canvas_init(canvas *c, uint16_t w, uint16_t h) {
 	if (c) {
 		c->height = h;
 		c->width = w;
-		for (uint16_t i = 0; i < (w*h); i++)
-			c->pixels[i] = (col3){ };
 	}
 	return c;
 }
 
 canvas* write_pixel(canvas* c, uint16_t x, uint16_t y, col3* colour) {
 	if (c && colour) {
-		c->pixels[(y * c->width) + x] = *colour;
+		if (x < c->width && y < c->height)
+			c->pixels[(y * c->width) + x] = *colour;
 		return c;
 	}
 	return nullptr;
