@@ -59,20 +59,10 @@ $(BUILD_DIR)/$(TEST_EXEC): $(TEST_OBJS) $(LIB_DIR)/$(LIB_NAME) $(BUILD_DIR)/src/
 	@echo "Linking executable: $@"
 	$(V)$(CC) $(LTO_FLAGS) $^ -o $@ -lm
 
-$(BUILD_DIR)/%.o: %.c
-	@echo "Compiling test suit: $<"
-	$(V)mkdir -p $(dir $@)
-	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) -c $< -o $@
-
-$(BUILD_DIR)/src/canvas.o: src/canvas.c
-	@echo "Compiling 'canvas.c' file."
-	$(V)mkdir -p $(dir $@)
-	$(V)$(CC) $(CPP_FLAGS) $(CFLAGS) -c $< -o $@
-
 .PHONY: clean
 clean:
 	@echo "Cleaning build files..."
-	$(V)rm -r $(BUILD_DIR) $(LIB_DIR) $(TEST_EXEC)
+	$(V)rm -r $(BUILD_DIR) $(LIB_DIR)
 
 .PHONY: verbose
 verbose:
