@@ -67,8 +67,7 @@ void canvas_delete(canvas** c) {
 }
 
 [[nodiscard("pointer to allocated canvas dropped.")]]
-[[__gnu__::__malloc__, __gnu_free__(canvas_delete)]]
-static
+[[__gnu__::__malloc__]]
 inline
 canvas* canvas_new(uint16_t w, uint16_t h) {
 	size_t size = offsetof(canvas, pixels) + sizeof(col3[w*h]);
