@@ -9,10 +9,15 @@ extern "C" {
 
 typedef struct tuple tuple;
 struct tuple {
-	double x;
-	double y;
-	double z;
-	double w;
+	union {
+		struct {
+			double x;
+			double y;
+			double z;
+			double w;
+		};
+		double data[4];
+	};
 };
 
 typedef tuple point3;
