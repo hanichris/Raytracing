@@ -21,7 +21,7 @@ INC_DIRS := $(shell find $(SRC_DIR) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 CPP_FLAGS := $(INC_FLAGS)
-CFLAGS := -Wall -Wpedantic -Wextra -std=gnu23 -O3
+CFLAGS := -Wall -Wpedantic -Wextra -Werror -std=gnu23 -O3
 LTO_FLAGS := -flto
 
 VERBOSE := 0
@@ -55,7 +55,7 @@ test: $(BUILD_DIR)/$(TEST_EXEC)
 	@echo "Running test suit: $<"
 	$(V)./$<
 
-$(BUILD_DIR)/$(TEST_EXEC): $(TEST_OBJS) $(LIB_DIR)/$(LIB_NAME) $(BUILD_DIR)/src/canvas.o
+$(BUILD_DIR)/$(TEST_EXEC): $(TEST_OBJS) $(LIB_DIR)/$(LIB_NAME) $(BUILD_DIR)/src/canvas.o $(BUILD_DIR)/src/mat.o
 	@echo "Linking executable: $@"
 	$(V)$(CC) $(LTO_FLAGS) $^ -o $@ -lm
 
