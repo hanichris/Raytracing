@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define EPSILON 1E-5
+#ifndef EPSILON
+# define EPSILON 1E-5
+#endif
 
 static
 bool float_equal(float x, float y) {
@@ -159,3 +161,4 @@ void run_canvas_tests(void) {
 	test_canvas_ppm_pixel_data_construction();
 }
 
+#undef EPSILON
