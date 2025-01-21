@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "../src/headers/mat.h"
 #include "test_main.h"
 
@@ -255,6 +253,113 @@ void test_mat_transpose_4x4_identity_matrix(void) {
 	putchar('.');
 }
 
+static
+void test_mat_2x2_determinant(void) {
+	mat4 a = {
+		.m00=1, .m01=5,
+		.m10=-3,.m11=2,
+	};
+
+	assert(float_equal(mat4_determinant(&a), 17));
+
+	putchar('.');
+}
+
+
+static
+void test_mat_2x2_determinant_nullptr(void) {
+	assert(isnan(mat4_determinant(NULL)));
+
+	putchar('.');
+}
+
+static
+void test_mat_create_3x3_submatrix_of_4x4_matrix(void) {
+	mat16 a = {
+		.m00=-6, .m01=1, .m02=1, .m03=6,
+		.m10=-8, .m11=5, .m12=8, .m13=6,
+		.m20=-1, .m21=0, .m22=8, .m23=2,
+		.m30=-7, .m31=1, .m32=-1,.m33=1,
+	};
+
+	mat9* out = MAT16_SUBMATRIX(&a, 2, 1);
+	
+	assert(float_equal(out->m00, -6));
+	assert(float_equal(out->m01, 1));
+	assert(float_equal(out->m02, 6));
+	assert(float_equal(out->m10, -8));
+	assert(float_equal(out->m11, 8));
+	assert(float_equal(out->m12, 6));
+	assert(float_equal(out->m20, -7));
+	assert(float_equal(out->m21, -1));
+	assert(float_equal(out->m22, 1));
+
+	putchar('.');
+
+}
+
+static
+void test_mat_create_3x3_submatrix_of_4x4_matrix_outofboundsaccess(void) {
+	mat16 a = {
+		.m00=-6, .m01=1, .m02=1, .m03=6,
+		.m10=-8, .m11=5, .m12=8, .m13=6,
+		.m20=-1, .m21=0, .m22=8, .m23=2,
+		.m30=-7, .m31=1, .m32=-1,.m33=1,
+	};
+
+	mat9* out = MAT16_SUBMATRIX(&a, 10, 1);
+
+	assert(out == NULL);
+	putchar('.');
+}
+
+static
+void test_mat_create_3x3_submatrix_of_4x4_matrix_null(void) {
+	assert(MAT16_SUBMATRIX(NULL, 10, 1) == NULL);
+
+	putchar('.');
+}
+
+static
+void test_mat_create_2x2_submatrix_of_3x3_matrix(void) {
+	mat9 a = {
+		.m00=1, .m01=5, .m02=0,
+		.m10=-3,.m11=2, .m12=7,
+		.m20=0, .m21=6, .m22=-3,
+	};
+
+	mat4* out = MAT9_SUBMATRIX(&a, 0, 2);
+
+	assert(float_equal(out->m00, -3));
+	assert(float_equal(out->m01, 2));
+	assert(float_equal(out->m10, 0));
+	assert(float_equal(out->m11, 6));
+
+	putchar('.');
+}
+
+static
+void test_mat_create_2x2_submatrix_of_3x3_matrix_outofboundsaccess(void) {
+	mat9 a = {
+		.m00=1, .m01=5, .m02=0,
+		.m10=-3,.m11=2, .m12=7,
+		.m20=0, .m21=6, .m22=-3,
+	};
+
+	mat4* out = MAT9_SUBMATRIX(&a, 1, -1);
+
+	assert(out == NULL);
+	putchar('.');
+}
+
+static
+void test_mat_create_2x2_submatrix_of_3x3_matrix_null(void) {
+	mat4* out = MAT9_SUBMATRIX(NULL, 0, 0);
+
+	assert(out == NULL);
+	putchar('.');
+}
+
 void run_mat_tests(void) {
 	test_mat_create_4x4_matrix();
 	test_mat_create_3x3_matrix();
@@ -270,6 +375,14 @@ void run_mat_tests(void) {
 	test_mat_multiply_a_tuple_with_identity_matrix();
 	test_mat_transpose_4x4_matrix();
 	test_mat_transpose_4x4_identity_matrix();
+	test_mat_2x2_determinant();
+	test_mat_2x2_determinant_nullptr();
+	test_mat_create_3x3_submatrix_of_4x4_matrix();
+	test_mat_create_2x2_submatrix_of_3x3_matrix();
+	test_mat_create_3x3_submatrix_of_4x4_matrix_outofboundsaccess();
+	test_mat_create_2x2_submatrix_of_3x3_matrix_outofboundsaccess();
+	test_mat_create_3x3_submatrix_of_4x4_matrix_null();
+	test_mat_create_2x2_submatrix_of_3x3_matrix_null();
 }
 
 #undef EPSILON
