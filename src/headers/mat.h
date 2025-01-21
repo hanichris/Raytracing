@@ -95,6 +95,26 @@ mat9* mat16_submatrix(mat16 const* a, unsigned r, unsigned c, mat9* out);
 mat4* mat9_submatrix(mat9 const* a, unsigned r, unsigned c, mat4* out);
 
 /**
+ * mat9_minor - computes the minor of the element at a[r][c] within the 3x3
+ * matrix a.
+ * @a: pointer to a 3x3 matrix (input).
+ * @r: row of the element of interest. Using 0-indexing.
+ * @c: column of the element of interest. Using 0-indexing.
+ * @Returns: The minor of the element at location of interest. NAN, otherwise.
+ */
+float mat9_minor(mat9 const* a, unsigned r, unsigned c);
+
+/**
+ * mat9_cofactor - computes the cofactor of the element at a[r][c] within the
+ * 3x3 matrix a.
+ * @a: pointer to a 3x3 matrix (input).
+ * @r: row of the element of interest. Using 0-indexing.
+ * @c: column of the element of interest. Using 0-indexing.
+ * @ReturnsL The cofactor of the element at the specified location. NAN, otherwise.
+ */
+float mat9_cofactor(mat9 const* a, unsigned r, unsigned c);
+
+/**
  * mat16_is_equal - tests the equality of two 4x4 matrices. If every
  * element of matrix `a` is equal to every element of matrix
  * `b`, then we can say that both matrices are equal. Otherwise,

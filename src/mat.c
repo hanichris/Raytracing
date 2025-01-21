@@ -77,6 +77,17 @@ float mat4_determinant(mat4 const* a) {
 	return NAN;
 }
 
+float mat9_minor(mat9 const* a, unsigned r, unsigned c) {
+	return a ? mat4_determinant(MAT9_SUBMATRIX(a, r, c)): NAN;
+}
+
+float mat9_cofactor(mat9 const* a, unsigned r, unsigned c) {
+	if (a) {
+		float res = mat9_minor(a, r, c);
+		return (r + c) & 1 ? -res: res; 
+	}
+	return NAN;
+}
 
 mat9* mat16_submatrix(mat16 const* a, unsigned r, unsigned c, mat9* out) {
 	if (a && out) {
