@@ -59,9 +59,43 @@ struct mat4 {
 	};
 };
 
+/**
+ * mat4_determinant - computest the determinant of a 2x2 matrix `a`.
+ * @a: pointer to 2x2 matrix.
+ * @Returns: determinant of the matrix.
+ */
+float mat4_determinant(mat4 const* a);
+
+#define MAT16_SUBMATRIX(a, r, c) (mat16_submatrix((a), (r), (c), (&(mat9){ })))
+/**
+ * mat16_submatrix - create a 3x3 matrix from the 4x4 matrix `a` by eliminating
+ * the entries in the provided row `r` and column `c`. The created 3x3 matrix
+ * is then stored in the output matrix `out`.
+ * @a: pointer to a 4x4 matrix (input).
+ * @r: row to eliminate in the 4x4 matrix.
+ * @c: column to eliminate in the 4x4 matrix.
+ * @out: pointer to a 3x3 matrix (output).
+ * @Returns: 3x3 submatrix of a 4x4 matrix if successful. Otherwise, nullptr
+ * is returned.
+ */
+mat9* mat16_submatrix(mat16 const* a, unsigned r, unsigned c, mat9* out);
+
+#define MAT9_SUBMATRIX(a, r, c) (mat9_submatrix((a), (r), (c), (&(mat4){ })))
+/**
+ * mat9_submatrix - create a 2x2 matrix from the 3x3 matrix `a` by eliminating
+ * the entries in the provided row `r` and column `c`. The created 2x2 matrix
+ * is then stored in the output matrix `out`.
+ * @a: pointer to a 3x3 matrix (input).
+ * @r: row to eliminate in the 3x3 matrix.
+ * @c: column to eliminate in the 3x3 matrix.
+ * @out: pointer to a 2x2 matrix (output).
+ * @Returns: 2x2 submatrix of a 4x4 matrix if successful. Otherwise, nullptr
+ * is returned.
+ */
+mat4* mat9_submatrix(mat9 const* a, unsigned r, unsigned c, mat4* out);
 
 /**
- * is_equal - tests the equality of two 4x4 matrices. If every
+ * mat16_is_equal - tests the equality of two 4x4 matrices. If every
  * element of matrix `a` is equal to every element of matrix
  * `b`, then we can say that both matrices are equal. Otherwise,
  * they are not equal.
