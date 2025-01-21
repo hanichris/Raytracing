@@ -360,6 +360,34 @@ void test_mat_create_2x2_submatrix_of_3x3_matrix_null(void) {
 	putchar('.');
 }
 
+static
+void test_mat_minor_of_3x3_matrix(void) {
+	mat9 a = {
+		.m00=3, .m01=5,  .m02=0,
+		.m10=2, .m11=-1, .m12=-7,
+		.m20=6, .m21=-1, .m22=5,
+	};
+
+	assert(float_equal(mat9_minor(&a, 1, 0), 25));
+	assert(float_equal(mat9_cofactor(&a, 0, 0), -12));
+
+	putchar('.');
+}
+
+static
+void test_mat_cofactor_of_3x3_matrix(void) {
+	mat9 a = {
+		.m00=3, .m01=5,  .m02=0,
+		.m10=2, .m11=-1, .m12=-7,
+		.m20=6, .m21=-1, .m22=5,
+	};
+
+	assert(float_equal(mat9_cofactor(&a, 1, 0), -25));
+	assert(float_equal(mat9_cofactor(&a, 0, 0), -12));
+
+	putchar('.');
+}
+
 void run_mat_tests(void) {
 	test_mat_create_4x4_matrix();
 	test_mat_create_3x3_matrix();
@@ -383,6 +411,8 @@ void run_mat_tests(void) {
 	test_mat_create_2x2_submatrix_of_3x3_matrix_outofboundsaccess();
 	test_mat_create_3x3_submatrix_of_4x4_matrix_null();
 	test_mat_create_2x2_submatrix_of_3x3_matrix_null();
+	test_mat_minor_of_3x3_matrix();
+	test_mat_cofactor_of_3x3_matrix();
 }
 
 #undef EPSILON
