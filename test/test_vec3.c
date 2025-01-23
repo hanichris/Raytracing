@@ -26,16 +26,16 @@ void test_tuple_is_a_vector(tuple* t) {
 
 static
 void test_cross(void) {
-	vec3* u = VECTOR(1, 2, 3);
-	vec3* v = VECTOR(2, 3, 4);
+	vec3 u = VECTOR(1, 2, 3);
+	vec3 v = VECTOR(2, 3, 4);
 
-	vec3* out = VEC3_CROSS(u, v);
+	vec3* out = VEC3_CROSS(&u, &v);
 
 	assert(float_equal(out->x, -1.0));
 	assert(float_equal(out->y, 2.0));
 	assert(float_equal(out->z, -1.0));
 
-	out = VEC3_CROSS(v, u);
+	out = VEC3_CROSS(&v, &u);
 
 	assert(float_equal(out->x, 1.0));
 	assert(float_equal(out->y, -2.0));
@@ -46,23 +46,23 @@ void test_cross(void) {
 
 static
 void test_cross_null(void) {
-	vec3* u = VECTOR(1, 2, 3);
-	vec3* v = VECTOR(4, 5, 6);
+	vec3 u = VECTOR(1, 2, 3);
+	vec3 v = VECTOR(4, 5, 6);
 	vec3 out;
 
-	assert(cross(NULL, v, &out) == NULL);
-	assert(cross(u, NULL, &out) == NULL);
-	assert(cross(u, v, NULL) == NULL);
+	assert(cross(NULL, &v, &out) == NULL);
+	assert(cross(&u, NULL, &out) == NULL);
+	assert(cross(&u, &v, NULL) == NULL);
 
 	putchar('.');
 }
 
 static
 void test_dot(void) {
-	vec3* u = VECTOR(1, 2, 3);
-	vec3* v = VECTOR(4, 5, 6);
+	vec3 u = VECTOR(1, 2, 3);
+	vec3 v = VECTOR(4, 5, 6);
 
-	double res = dot(u, v);
+	double res = dot(&u, &v);
 
 	assert(float_equal(res, 32.0));
 	putchar('.');
@@ -70,18 +70,18 @@ void test_dot(void) {
 
 static
 void test_dot_null(void) {
-	vec3* u = VECTOR(1, 2, 3);
+	vec3 u = VECTOR(1, 2, 3);
 
-	assert(isnan(dot(u, NULL)));
-	assert(isnan(dot(NULL, u)));
+	assert(isnan(dot(&u, NULL)));
+	assert(isnan(dot(NULL, &u)));
 
 	putchar('.');
 }
 
 static
 void test_add_tuples(void) {
-	tuple u = {3, -2, 5, 1};
-	tuple v = {-2, 3, 1, 0};
+	tuple u = { .x=3, .y=-2, .z=5, .w=1 };
+	tuple v = { .x=-2, .y=3, .z=1, .w=0 };
 
 	tuple* out = VEC3_ADD(&u, &v);
 
@@ -95,10 +95,10 @@ void test_add_tuples(void) {
 
 static
 void test_sub_a_vector_from_a_point(void) {
-	point3* p = POINT(3, 2, 1);
-	vec3* v = VECTOR(5, 6, 7);
+	point3 p = POINT(3, 2, 1);
+	vec3 v = VECTOR(5, 6, 7);
 
-	vec3* out = VEC3_SUB(p, v);
+	vec3* out = VEC3_SUB(&p, &v);
 
 	assert(float_equal(out->x, -2.0));
 	assert(float_equal(out->y, -4.0));
@@ -110,10 +110,10 @@ void test_sub_a_vector_from_a_point(void) {
 
 static
 void test_sub_a_vector_from_zero_vector(void) {
-	vec3* p = VECTOR(0, 0, 0);
-	vec3* q = VECTOR(5, 6, 7);
+	vec3 p = VECTOR(0, 0, 0);
+	vec3 q = VECTOR(5, 6, 7);
 
-	vec3* out = VEC3_SUB(p, q);
+	vec3* out = VEC3_SUB(&p, &q);
 
 	assert(float_equal(out->x, -5.0));
 	assert(float_equal(out->y, -6.0));
@@ -125,10 +125,10 @@ void test_sub_a_vector_from_zero_vector(void) {
 
 static
 void test_sub_two_vectors(void) {
-	vec3* p = VECTOR(3, 2, 1);
-	vec3* q = VECTOR(5, 6, 7);
+	vec3 p = VECTOR(3, 2, 1);
+	vec3 q = VECTOR(5, 6, 7);
 
-	vec3* out = VEC3_SUB(p, q);
+	vec3* out = VEC3_SUB(&p, &q);
 
 	assert(float_equal(out->x, -2.0));
 	assert(float_equal(out->y, -4.0));
@@ -140,10 +140,10 @@ void test_sub_two_vectors(void) {
 
 static
 void test_sub_two_points(void) {
-	point3* p = POINT(3, 2, 1);
-	point3* q = POINT(5, 6, 7);
+	point3 p = POINT(3, 2, 1);
+	point3 q = POINT(5, 6, 7);
 
-	vec3* out = VEC3_SUB(p, q);
+	vec3* out = VEC3_SUB(&p, &q);
 
 	assert(float_equal(out->x, -2.0));
 	assert(float_equal(out->y, -4.0));
@@ -155,7 +155,7 @@ void test_sub_two_points(void) {
 
 static
 void test_negate_a_tuple(void) {
-	tuple t = { 1, -2, 3, -4};
+	tuple t = { .x=1, .y=-2, .z=3, .w=-4 };
 
 	tuple* out = VEC3_NEGATE(&t);
 
@@ -169,7 +169,7 @@ void test_negate_a_tuple(void) {
 
 static
 void test_scalar_mul_tuple_with_fraction(void) {
-	tuple u = {1.0, -2.0, 3.0, -4.0};
+	tuple u = { .x=1.0, .y=-2.0, .z=3.0, .w=-4.0 };
 
 	tuple* v = VEC3_MUL(&u, 0.5);
 
@@ -183,7 +183,7 @@ void test_scalar_mul_tuple_with_fraction(void) {
 
 static
 void test_scalar_mul_tuple(void) {
-	tuple u = {1.0, -2.0, 3.0, -4.0};
+	tuple u = { .x=1.0, .y=-2.0, .z=3.0, .w=-4.0 };
 
 	tuple* v = VEC3_MUL(&u, 3.5);
 
@@ -197,7 +197,7 @@ void test_scalar_mul_tuple(void) {
 
 static
 void test_scalar_div(void) {
-	tuple t = {1, -2, 3, -4};
+	tuple t = { .x=1, .y=-2, .z=3, .w=-4 };
 
 	tuple* v = VEC3_DIV(&t, 2.0);
 
@@ -211,7 +211,7 @@ void test_scalar_div(void) {
 
 static
 void test_scalar_div_zero(void) {
-	tuple t = {1.0, 2.0, 3.0, 4.0};
+	tuple t = { .x=1.0, .y=2.0, .z=3.0, .w=4.0 };
 
 	tuple* v = VEC3_DIV(&t, 0.0);
 
@@ -225,24 +225,24 @@ void test_scalar_div_zero(void) {
 
 static
 void test_len_squared(void) {
-	vec3* u = VECTOR(1, 0, 0);
-	double result = len_squared(u);
+	vec3 u = VECTOR(1, 0, 0);
+	double result = len_squared(&u);
 	assert(float_equal(result, 1.0));
 
 	u = VECTOR(0, 1, 0);
-	result = len_squared(u);
+	result = len_squared(&u);
 	assert(float_equal(result, 1.0));
 
 	u = VECTOR(0, 0, 1);
-	result = len_squared(u);
+	result = len_squared(&u);
 	assert(float_equal(result, 1.0));
 
 	u = VECTOR(1, 2, 3);
-	result = len_squared(u);
+	result = len_squared(&u);
 	assert(float_equal(result, 14));
 
 	u = VECTOR(-1, -2, -3);
-	result = len_squared(u);
+	result = len_squared(&u);
 	assert(float_equal(result, 14));
 
 	putchar('.');
@@ -251,24 +251,24 @@ void test_len_squared(void) {
 
 static
 void test_len(void) {
-	vec3* u = VECTOR(1, 0, 0);
-	double result = len(u);
+	vec3 u = VECTOR(1, 0, 0);
+	double result = len(&u);
 	assert(float_equal(result, 1.0));
 
 	u = VECTOR(0, 1, 0);
-	result = len(u);
+	result = len(&u);
 	assert(float_equal(result, 1.0));
 
 	u = VECTOR(0, 0, 1);
-	result = len(u);
+	result = len(&u);
 	assert(float_equal(result, 1.0));
 
 	u = VECTOR(1, 2, 3);
-	result = len(u);
+	result = len(&u);
 	assert(float_equal(result, sqrt(14)));
 
 	u = VECTOR(-1, -2, -3);
-	result = len(u);
+	result = len(&u);
 	assert(float_equal(result, sqrt(14)));
 
 	putchar('.');
@@ -288,14 +288,14 @@ void test_len_null_pointer(void) {
 
 static
 void test_unit_vec3(void) {
-	vec3* u = VECTOR(4, 0, 0);
-	vec3* v = VEC3_UNIT(u);
+	vec3 u = VECTOR(4, 0, 0);
+	vec3* v = VEC3_UNIT(&u);
 	assert(float_equal(v->x, 1.0));
 	assert(float_equal(v->y, 0.0));
 	assert(float_equal(v->z, 0.0));
 
 	u = VECTOR(1, 2, 3);
-	v = VEC3_UNIT(u);
+	v = VEC3_UNIT(&u);
 	assert(float_equal(v->x, 0.2672612419));
 	assert(float_equal(v->y, 0.5345224838));
 	assert(float_equal(v->z, 0.8017837257));
@@ -305,9 +305,9 @@ void test_unit_vec3(void) {
 
 static
 void test_magnitude_of_unit_vector(void) {
-	vec3* u = VECTOR(1, 2, 3);
+	vec3 u = VECTOR(1, 2, 3);
 
-	vec3* norm = VEC3_UNIT(u);
+	vec3* norm = VEC3_UNIT(&u);
 	double result = len(norm);
 
 	assert(float_equal(result, 1.0));
@@ -317,10 +317,10 @@ void test_magnitude_of_unit_vector(void) {
 
 
 void run_vec3_tests(void) {
-	point3* p = POINT(4, -4, 3);
-	vec3* v = VECTOR(4, -4, 3);
-	test_tuple_is_a_point(p);
-	test_tuple_is_a_vector(v);
+	point3 p = POINT(4, -4, 3);
+	vec3 v = VECTOR(4, -4, 3);
+	test_tuple_is_a_point(&p);
+	test_tuple_is_a_vector(&v);
 	test_add_tuples();
 	test_sub_a_vector_from_a_point();
 	test_sub_two_points();
