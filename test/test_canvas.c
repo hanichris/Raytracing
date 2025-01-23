@@ -35,9 +35,9 @@ void test_canvas_creation(void) {
 static
 void test_canvas_write_pixel(void) {
 	__attribute__((cleanup(canvas_delete)))canvas* c = canvas_new(10, 20);
-	col3* red = COLOUR(1.0f, 0.0f, 0.0f);
+	col3 red = COLOUR(1.0f, 0.0f, 0.0f);
 
-	c = write_pixel(c, 2, 3, red);
+	c = write_pixel(c, 2, 3, &red);
 
 	assert(c != NULL);
 	col3 const* out = pixel_at(c, 2, 3);
@@ -115,13 +115,13 @@ static
 void test_canvas_ppm_pixel_data_construction(void) {
 	__attribute__((cleanup(canvas_delete)))canvas* c = canvas_new(5, 3);
 
-	col3* red = COLOUR(1.5f, 0, 0);
-	col3* green = COLOUR(0, 0.5, 0);
-	col3* blue = COLOUR(-0.5f, 0, 1);
+	col3 red = COLOUR(1.5f, 0, 0);
+	col3 green = COLOUR(0, 0.5, 0);
+	col3 blue = COLOUR(-0.5f, 0, 1);
 
-	c = write_pixel(c, 0, 0, red);
-	c = write_pixel(c, 2, 1, green);
-	c = write_pixel(c, 4, 2, blue);
+	c = write_pixel(c, 0, 0, &red);
+	c = write_pixel(c, 2, 1, &green);
+	c = write_pixel(c, 4, 2, &blue);
 
 	char* ppm_filename = canvas_2_ppm(c);
 	assert(ppm_filename != NULL);
