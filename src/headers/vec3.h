@@ -3,10 +3,6 @@
 
 #include <math.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef struct tuple tuple;
 struct tuple {
 	union {
@@ -25,36 +21,14 @@ typedef tuple vec3;
 
 // Small and frequently used functions are statically inlined.
 
-#define POINT(x, y, z) (point((x), (y), (z), (&(tuple){ })))
-static
-inline
-tuple* point(double x, double y, double z, tuple* out) {
-	if (out) {
-		out->x = x;
-		out->y = y;
-		out->z = z;
-		out->w = 1.0;
-	}
-	return out;
-}
+#define POINT(a, b, c) ((point3){ .x=(a), .y=(b), .z=(c), .w=1 })
 
-#define VECTOR(x, y, z) (vector((x), (y), (z), (&(tuple){ })))
-static
-inline
-tuple* vector(double x, double y, double z, tuple* out) {
-	if (out) {
-		out->x = x;
-		out->y = y;
-		out->z = z;
-		out->w = 0.0;
-	}
-	return out;
-}
+#define VECTOR(a, b, c) ((vec3){ .x=(a), .y=(b), .z=(c), .w=0 })
 
 #define VEC3_NEGATE(t) (negate((t), (&(tuple){ })))
 static
 inline
-tuple* negate(tuple* t, tuple* out) {
+tuple* negate(tuple const* t, tuple* out) {
 	if (t && out) {
 		out->x = -t->x;
 		out->y = -t->y;
@@ -193,10 +167,5 @@ tuple* add(tuple const* u, tuple const* v, tuple* out);
  * @Returns: `out`.
  */
 vec3* cross(vec3 const* u, vec3 const* v, vec3* out);
-
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
