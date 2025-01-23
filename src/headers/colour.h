@@ -13,17 +13,7 @@ struct col3 {
 };
 
 
-#define COLOUR(r, g, b) (colour((r), (g), (b), (&(col3){ })))
-static
-inline
-col3* colour(float r, float g, float b, col3* out) {
-	if (out) {
-		out->red = r;
-		out->green = g;
-		out->blue = b;
-	}
-	return out;
-}
+#define COLOUR(r, g, b) ((col3){ .red=(r), .green=(g), .blue=(b) })
 
 #define COL3_ADD(u, v) (col_add((u), (v), (&(col3){ })))
 static
