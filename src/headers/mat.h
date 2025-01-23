@@ -66,6 +66,20 @@ struct mat4 {
  */
 float mat4_determinant(mat4 const* a);
 
+/**
+ * mat4_determinant - computest the determinant of a 3x3 matrix `a`.
+ * @a: pointer to 3x3 matrix.
+ * @Returns: determinant of the matrix.
+ */
+float mat9_determinant(mat9 const* a);
+
+/**
+ * mat16_determinant - computest the determinant of a 4x4 matrix `a`.
+ * @a: pointer to 4x4 matrix.
+ * @Returns: determinant of the matrix.
+ */
+float mat16_determinant(mat16 const* a);
+
 #define MAT16_SUBMATRIX(a, r, c) (mat16_submatrix((a), (r), (c), (&(mat9){ })))
 /**
  * mat16_submatrix - create a 3x3 matrix from the 4x4 matrix `a` by eliminating
@@ -115,6 +129,26 @@ float mat9_minor(mat9 const* a, unsigned r, unsigned c);
 float mat9_cofactor(mat9 const* a, unsigned r, unsigned c);
 
 /**
+ * mat16_minor - computes the minor of the element at a[r][c] within the 4x4
+ * matrix a.
+ * @a: pointer to a 4x4 matrix (input).
+ * @r: row of the element of interest. Using 0-indexing.
+ * @c: column of the element of interest. Using 0-indexing.
+ * @Returns: The minor of the element at location of interest. NAN, otherwise.
+ */
+float mat16_minor(mat16 const* a, unsigned r, unsigned c);
+
+/**
+ * mat16_cofactor - computes the cofactor of the element at a[r][c] within the
+ * 4x4 matrix a.
+ * @a: pointer to a 4x4 matrix (input).
+ * @r: row of the element of interest. Using 0-indexing.
+ * @c: column of the element of interest. Using 0-indexing.
+ * @ReturnsL The cofactor of the element at the specified location. NAN, otherwise.
+ */
+float mat16_cofactor(mat16 const* a, unsigned r, unsigned c);
+
+/**
  * mat16_is_equal - tests the equality of two 4x4 matrices. If every
  * element of matrix `a` is equal to every element of matrix
  * `b`, then we can say that both matrices are equal. Otherwise,
@@ -154,4 +188,14 @@ tuple* mat16_mul_by_tuple(mat16 const* a, tuple const* b, tuple* out);
  * @Returns: transpose of `a`. Otherwise, null.
  */
 mat16* mat16_transpose(mat16* a);
+
+#define MAT16_INVERSE(a) (mat16_inverse((a), (&(mat16){ })))
+/**
+ * mat16_inverse - computes the inverse of a 4x4 matrix `a`. This operation relies
+ * on finding the adjoint of the matrix and dividing it by the matrix's determinant.
+ * @a: pointer to a 4x4 matrix (input).
+ * @out: pointer to a 4x4 matrix (output).
+ * @Returns: inverse of `a`. Otherwise, null.
+ */
+mat16* mat16_inverse(mat16 const* a, mat16* out);
 #endif

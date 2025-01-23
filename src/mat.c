@@ -1,4 +1,5 @@
 #include "headers/mat.h"
+#include <stdio.h>
 
 #define EPSILON 1E-5
 
@@ -77,6 +78,7 @@ float mat4_determinant(mat4 const* a) {
 	return NAN;
 }
 
+
 float mat9_minor(mat9 const* a, unsigned r, unsigned c) {
 	return a ? mat4_determinant(MAT9_SUBMATRIX(a, r, c)): NAN;
 }
@@ -85,6 +87,39 @@ float mat9_cofactor(mat9 const* a, unsigned r, unsigned c) {
 	if (a) {
 		float res = mat9_minor(a, r, c);
 		return (r + c) & 1 ? -res: res; 
+	}
+	return NAN;
+}
+
+float mat9_determinant(const mat9 *a) {
+	if (a) {
+		float col0 = a->m00 * mat9_cofactor(a, 0, 0);
+		float col1 = a->m01 * mat9_cofactor(a, 0, 1);
+		float col2 = a->m02 * mat9_cofactor(a, 0, 2);
+		return col0 + col1 + col2;
+	}
+	return NAN;
+}
+
+float mat16_minor(mat16 const* a, unsigned r, unsigned c) {
+	return a ? mat9_determinant(MAT16_SUBMATRIX(a, r, c)) : NAN;
+}
+
+float mat16_cofactor(mat16 const* a, unsigned r, unsigned c) {
+	if (a) {
+		float res = mat16_minor(a, r, c);
+		return (r + c) & 1 ? -res: res;
+	}
+	return NAN;
+}
+
+float mat16_determinant(const mat16 *a) {
+	if (a) {
+		float col0 = a->m00 * mat16_cofactor(a, 0, 0);
+		float col1 = a->m01 * mat16_cofactor(a, 0, 1);
+		float col2 = a->m02 * mat16_cofactor(a, 0, 2);
+		float col3 = a->m03 * mat16_cofactor(a, 0, 3);
+		return col0 + col1 + col2 + col3;
 	}
 	return NAN;
 }
@@ -141,6 +176,22 @@ mat4* mat9_submatrix(mat9 const* a, unsigned r, unsigned c, mat4* out) {
 			out->data[jdx++] = a->data[idx++];
 		}
 		return out;
+	}
+	return nullptr;
+}
+
+mat16* mat16_inverse(mat16 const* a, mat16* out) {
+	if (a && out) {
+		float det_a = mat16_determinant(a);
+		if (float_equal(det_a, 0)) {
+			fprintf(stderr, "Matrix is not invertible.\n");
+			return nullptr;
+		}
+		for (unsigned r = 0; r < 4; r++)
+			for (unsigned c = 0; c < 4; c++)
+				out->data[c * 4 + r] = mat16_cofactor(a, r, c) / det_a;
+		return out;
+
 	}
 	return nullptr;
 }
