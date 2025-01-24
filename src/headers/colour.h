@@ -1,10 +1,6 @@
 #ifndef MY_COLOUR_H
 #define MY_COLOUR_H 1
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef struct col3 col3;
 struct col3 {
 	float red;
@@ -66,9 +62,5 @@ col3* col_hadamard_mul(col3 const* a, col3 const* b, col3* c) {
 	}
 	return nullptr;
 }
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
