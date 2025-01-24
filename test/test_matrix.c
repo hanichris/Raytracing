@@ -679,6 +679,92 @@ void test_mat_reflection_of_a_point(void) {
 	putchar('.');
 }
 
+static
+void test_mat_3D_rotation_about_x_axis(void) {
+	mat16 half_quarter = ROTATION_X(M_PI_4);
+	mat16 full_quarter = ROTATION_X(M_PI_2);
+	point3 p = POINT(0, 1, 0);
+
+	point3* out = MAT16_MUL_TUPLE(&half_quarter, &p);
+
+	assert(float_equal(out->x, 0));
+	assert(float_equal(out->y, sqrtf(2)/2));
+	assert(float_equal(out->z, sqrtf(2)/2));
+	assert(float_equal(out->w, 1)); 
+
+	out = MAT16_MUL_TUPLE(&full_quarter, &p);
+
+	assert(float_equal(out->x, 0));
+	assert(float_equal(out->y, 0));
+	assert(float_equal(out->z, 1));
+	assert(float_equal(out->w, 1));
+
+	putchar('.');
+}
+
+static
+void test_mat_3D_rotation_about_x_axis_opp_dir(void) {
+	mat16 half_quarter = ROTATION_X(M_PI_4);
+	point3 p = POINT(0, 1, 0);
+
+	mat16* inv = MAT16_INVERSE(&half_quarter);
+
+	point3* out = MAT16_MUL_TUPLE(inv, &p);
+
+	assert(float_equal(out->x, 0));
+	assert(float_equal(out->y, sqrtf(2)/2));
+	assert(float_equal(out->z, -sqrtf(2)/2));
+	assert(float_equal(out->w, 1));
+
+	putchar('.');
+}
+
+static
+void test_mat_3D_rotation_about_y_axis(void) {
+	mat16 half_quarter = ROTATION_Y(M_PI_4);
+	mat16 full_quarter = ROTATION_Y(M_PI_2);
+	point3 p = POINT(0, 0, 1);
+
+	point3* out = MAT16_MUL_TUPLE(&half_quarter, &p);
+
+	assert(float_equal(out->x, sqrtf(2)/2));
+	assert(float_equal(out->y, 0));
+	assert(float_equal(out->z, sqrtf(2)/2));
+	assert(float_equal(out->w, 1)); 
+
+	out = MAT16_MUL_TUPLE(&full_quarter, &p);
+
+	assert(float_equal(out->x, 1));
+	assert(float_equal(out->y, 0));
+	assert(float_equal(out->z, 0));
+	assert(float_equal(out->w, 1));
+
+	putchar('.');
+}
+
+static
+void test_mat_3D_rotation_about_z_axis(void) {
+	mat16 half_quarter = ROTATION_Z(M_PI_4);
+	mat16 full_quarter = ROTATION_Z(M_PI_2);
+	point3 p = POINT(0, 1, 0);
+
+	point3* out = MAT16_MUL_TUPLE(&half_quarter, &p);
+
+	assert(float_equal(out->x, -sqrtf(2)/2));
+	assert(float_equal(out->y, sqrtf(2)/2));
+	assert(float_equal(out->z, 0));
+	assert(float_equal(out->w, 1)); 
+
+	out = MAT16_MUL_TUPLE(&full_quarter, &p);
+
+	assert(float_equal(out->x, -1));
+	assert(float_equal(out->y, 0));
+	assert(float_equal(out->z, 0));
+	assert(float_equal(out->w, 1));
+
+	putchar('.');
+}
+
 void run_mat_tests(void) {
 	test_mat_create_4x4_matrix();
 	test_mat_create_3x3_matrix();
@@ -722,6 +808,10 @@ void run_mat_tests(void) {
 	test_mat_multiply_a_vector_by_a_scaling_matrix();
 	test_mat_multiply_a_vector_by_inverse_of_a_scaling_matrix();
 	test_mat_reflection_of_a_point();
+	test_mat_3D_rotation_about_x_axis();
+	test_mat_3D_rotation_about_x_axis_opp_dir();
+	test_mat_3D_rotation_about_y_axis();
+	test_mat_3D_rotation_about_z_axis();
 }
 
 #undef EPSILON
