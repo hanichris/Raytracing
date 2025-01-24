@@ -1,7 +1,6 @@
 #ifndef MY_MAT_H
 #define MY_MAT_H 1
 
-#include <math.h>
 #include <stdbool.h>
 
 #include "vec3.h"
@@ -29,6 +28,12 @@ struct mat16 {
 #define TRANSLATION(x, y, z) ((mat16){.m00=1, .m03=(x), .m11=1, .m13=(y), .m22=1, .m23=(z), .m33=1 })
 
 #define SCALING(x, y, z) ((mat16){ .m00=(x), .m11=(y), .m22=(z), .m33=1 })
+
+#define RADIANS(deg) (((deg) * M_PI / 180.0))
+
+#define ROTATION_X(rad) ((mat16){ .m00=1, .m11=cos((rad)), .m12=-sin((rad)), .m21=sin((rad)), .m22=cos((rad)), .m33=1 })
+#define ROTATION_Y(rad) ((mat16){ .m00=cos((rad)), .m02=sin((rad)), .m11=1, .m20=-sin((rad)), .m22=cos((rad)), .m33=1 })
+#define ROTATION_Z(rad) ((mat16){ .m00=cos((rad)), .m01=-sin((rad)), .m10=sin((rad)), .m11=cos((rad)), .m22=1, .m33=1 })
 
 /**
  * mat9 - Matrix type (3 x 3 row-major representation.)
