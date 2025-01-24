@@ -28,6 +28,8 @@ struct mat16 {
 
 #define TRANSLATION(x, y, z) ((mat16){.m00=1, .m03=(x), .m11=1, .m13=(y), .m22=1, .m23=(z), .m33=1 })
 
+#define SCALING(x, y, z) ((mat16){ .m00=(x), .m11=(y), .m22=(z), .m33=1 })
+
 /**
  * mat9 - Matrix type (3 x 3 row-major representation.)
  * Has two coinciding representations to enforce readability
