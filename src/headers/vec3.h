@@ -1,6 +1,7 @@
 #ifndef MY_VEC3_H
 #define MY_VEC3_H 1
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 typedef struct tuple tuple;
