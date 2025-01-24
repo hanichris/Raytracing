@@ -1,5 +1,6 @@
 #include "../src/headers/mat.h"
 #include "test_main.h"
+#include <assert.h>
 
 #ifndef EPSILON
 # define EPSILON 1E-5
@@ -568,6 +569,116 @@ void test_mat_multiply_a_product_by_its_inverse(void) {
 	putchar('.');
 }
 
+static
+void test_mat_multiply_a_point_by_a_translation_matrix(void) {
+
+	mat16 transform = TRANSLATION(5, -3, 2);
+	point3 p = POINT(-3, 4, 5);
+
+	point3* out = MAT16_MUL_TUPLE(&transform, &p);
+
+	assert(float_equal(out->x, 2));
+	assert(float_equal(out->y, 1));
+	assert(float_equal(out->z, 7));
+	assert(float_equal(out->w, 1));
+
+	putchar('.');
+}
+
+static
+void test_mat_multiply_a_point_by_inverse_of_a_translation_matrix(void) {
+	mat16 transform = TRANSLATION(5, -3, 2);
+	mat16* inv = MAT16_INVERSE(&transform);
+
+	point3 p = POINT(-3, 4, 5);
+	
+	point3* out = MAT16_MUL_TUPLE(inv, &p);
+
+	assert(float_equal(out->x, -8));
+	assert(float_equal(out->y, 7));
+	assert(float_equal(out->z, 3));
+	assert(float_equal(out->w, 1));
+
+	putchar('.');
+}
+
+static
+void test_mat_multiply_a_vector_by_a_translation_matrix(void) {
+	mat16 transform = TRANSLATION(5, -3, 2);
+	vec3 v = VECTOR(-3, 4, 5);
+
+	vec3* out = MAT16_MUL_TUPLE(&transform, &v);
+
+	assert(float_equal(out->x, v.x));
+	assert(float_equal(out->y, v.y));
+	assert(float_equal(out->z, v.z));
+	assert(float_equal(out->w, v.w));
+
+	putchar('.');
+}
+
+static
+void test_mat_multiply_a_point_by_a_scaling_matrix(void) {
+	mat16 transform = SCALING(2, 3, 4);
+	point3 p = POINT(-4, 6, 8);
+
+	point3* out = MAT16_MUL_TUPLE(&transform, &p);
+
+	assert(float_equal(out->x, -8));
+	assert(float_equal(out->y, 18));
+	assert(float_equal(out->z, 32));
+	assert(float_equal(out->w, 1));
+
+	putchar('.');
+}
+
+static
+void test_mat_multiply_a_vector_by_a_scaling_matrix(void) {
+	mat16 transform = SCALING(2, 3, 4);
+	vec3 v = VECTOR(-4, 6, 8);
+
+	vec3* out = MAT16_MUL_TUPLE(&transform, &v);
+
+	assert(float_equal(out->x, -8));
+	assert(float_equal(out->y, 18));
+	assert(float_equal(out->z, 32));
+	assert(float_equal(out->w, 0));
+
+	putchar('.');
+}
+
+static
+void test_mat_multiply_a_vector_by_inverse_of_a_scaling_matrix(void) {
+	mat16 transform = SCALING(2, 3, 4);
+	mat16* inv = MAT16_INVERSE(&transform);
+	assert(inv != NULL);
+	vec3 v = VECTOR(-4, 6, 8);
+
+	vec3* out = MAT16_MUL_TUPLE(inv, &v);
+
+	assert(float_equal(out->x, -2));
+	assert(float_equal(out->y, 2));
+	assert(float_equal(out->z, 2));
+	assert(float_equal(out->w, 0));
+
+	putchar('.');
+}
+
+static
+void test_mat_reflection_of_a_point(void) {
+	mat16 transform = SCALING(-1, 1, 1);
+	point3 p = POINT(2, 3, 4);
+
+	point3* out = MAT16_MUL_TUPLE(&transform, &p);
+
+	assert(float_equal(out->x, -2));
+	assert(float_equal(out->y, 3));
+	assert(float_equal(out->z, 4));
+	assert(float_equal(out->w, 1));
+
+	putchar('.');
+}
+
 void run_mat_tests(void) {
 	test_mat_create_4x4_matrix();
 	test_mat_create_3x3_matrix();
@@ -603,6 +714,14 @@ void run_mat_tests(void) {
 	test_mat_invert_4x4_matrix_2();
 	test_mat_invert_4x4_matrix_3();
 	test_mat_multiply_a_product_by_its_inverse();
+	putchar('\n');
+	test_mat_multiply_a_point_by_a_translation_matrix();
+	test_mat_multiply_a_point_by_inverse_of_a_translation_matrix();
+	test_mat_multiply_a_vector_by_a_translation_matrix();
+	test_mat_multiply_a_point_by_a_scaling_matrix();
+	test_mat_multiply_a_vector_by_a_scaling_matrix();
+	test_mat_multiply_a_vector_by_inverse_of_a_scaling_matrix();
+	test_mat_reflection_of_a_point();
 }
 
 #undef EPSILON
